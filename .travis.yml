@@ -66,9 +66,11 @@ jobs:
         - PLAT_NAME='macosx'
       install: &mac-test-install
         - brew update && brew upgrade pyenv
+        - eval "$(pyenv init -)"
         - pyenv install --list
         - travis_retry pyenv install -s $PYENV_VERSION
-        - pyenv global $PYENV_VERSION
+        - pyenv local $PYENV_VERSION
+        - pyenv rehash
         - travis_retry pip install -e .[coverage]
         - travis_retry pip install codecov docutils
       script: *test-script
