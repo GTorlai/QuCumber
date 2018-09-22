@@ -24,9 +24,6 @@ stages:
     if: branch = master
 
 
-env:  # needed for allow_failures
-
-
 jobs:
   fast_finish: true
   allow_failures:
