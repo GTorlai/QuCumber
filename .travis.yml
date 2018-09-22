@@ -63,8 +63,8 @@ jobs:
   include:
     - stage: test
       install:
-        - travis_retry pip install -e .[build,coverage]
-        - travis_retry pip install codecov
+        - travis_retry pip install -e .[coverage]
+        - travis_retry pip install codecov docutils
       script:
         - python setup.py check -rms  # check package metadata
         - pytest -s --cov=qucumber --no-cov-on-fail
