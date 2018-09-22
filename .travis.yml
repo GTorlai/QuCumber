@@ -66,7 +66,7 @@ jobs:
         - PLAT_NAME='macosx'
       install: &mac-test-install
         - mkdir -p $HOME/.matplotlib/
-        - echo "backend: TkAgg" > $HOME/.matplotlib/matplotlibrc
+        - "echo backend : TkAgg > $HOME/.matplotlib/matplotlibrc"
         - brew update && brew upgrade pyenv
         - eval "$(pyenv init -)"
         - pyenv install --list
