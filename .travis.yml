@@ -148,13 +148,17 @@ jobs:
         - docker
       env: CIBW_SKIP='cp27-* cp34-* *i686'
       install: travis_retry pip install cibuildwheel
-      script: cibuildwheel --output-dir wheelhouse
-    - name: "OSX Wheels (allowed to fail - need to fix)"
+      script:
+        - cibuildwheel --output-dir wheelhouse
+        - ls wheelhouse
+    - name: "OSX Wheels (internally ignoring errors - need to fix)"
       os: osx
       language: generic
       env: CIBW_SKIP='cp27-* cp34-* *i686'
       install: travis_retry pip install cibuildwheel
-      script: cibuildwheel --output-dir wheelhouse || true
+      script:
+        - cibuildwheel --output-dir wheelhouse || true
+        - ls wheelhouse
 
     - stage: deploy
       name: "GitHub Release - Examples"
