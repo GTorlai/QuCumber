@@ -3,8 +3,6 @@ dist: trusty
 sudo: false
 language: python
 
-python: 3.6
-
 git:
   depth: false
 
@@ -67,6 +65,7 @@ jobs:
         - PY_TAG='cp35'
         - PLAT_NAME='macosx'
       install: &mac-test-install
+        - pyenv install --list
         - travis_retry pyenv install -s $PYENV_VERSION
         - travis_retry pip install -e .[coverage]
         - travis_retry pip install codecov docutils
@@ -83,7 +82,7 @@ jobs:
       language: objective-c
       env:
         - PYENV_VERSION=3.7.6
-        - PY_TAG='cp36'
+        - PY_TAG='cp37'
         - PLAT_NAME='macosx'
       install: *max-test-install
       script: *test-script
