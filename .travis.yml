@@ -65,6 +65,7 @@ jobs:
         - PY_TAG='cp35'
         - PLAT_NAME='macosx'
       install: &mac-test-install
+        - brew upgrade pyenv
         - pyenv install --list
         - travis_retry pyenv install -s $PYENV_VERSION
         - travis_retry pip install -e .[coverage]
@@ -76,15 +77,15 @@ jobs:
         - PYENV_VERSION=3.6.6
         - PY_TAG='cp36'
         - PLAT_NAME='macosx'
-      install: *max-test-install
+      install: *mac-test-install
       script: *test-script
     - os: osx
       language: objective-c
       env:
-        - PYENV_VERSION=3.7.6
+        - PYENV_VERSION=3.7.0
         - PY_TAG='cp37'
         - PLAT_NAME='macosx'
-      install: *max-test-install
+      install: *mac-test-install
       script: *test-script
 
     - stage: style
