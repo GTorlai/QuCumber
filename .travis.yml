@@ -26,6 +26,7 @@ jobs:
     - os: linux
       dist: trusty
       python: 3.6
+      env: NIGHTLY_BUILD=1  # dummy envvar to force travis to classify this build differently
       before_install: *test-install
       install:
         - travis_retry pip uninstall torch
