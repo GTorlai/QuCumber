@@ -13,7 +13,9 @@ branches:
     - gh-pages
 
 cache:
-  - pip
+  directories:
+    - "$HOME/.cache/pip"
+    - "$HOME/.pyenv"
 
 stages:
   - test
@@ -65,10 +67,6 @@ jobs:
         - PY_TAG='cp35'
         - PLAT_NAME='macosx'
       install: &mac-test-install
-        - brew update && brew install pyenv
-        - hash -r
-        - eval "$(pyenv init -)"
-        - hash -r
         - travis_retry pyenv install -s $PYENV_VERSION
         - travis_retry pip install -e .[coverage]
         - travis_retry pip install codecov docutils
