@@ -74,8 +74,7 @@ jobs:
         - pyenv global $PYENV_VERSION
         - pyenv rehash
         - pip -V
-        - travis_retry pip install -e .[coverage]
-        - travis_retry pip install codecov docutils
+        <<: *linux-test-install
       script: *test-script
     - os: osx
       language: objective-c
