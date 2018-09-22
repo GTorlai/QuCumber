@@ -59,10 +59,11 @@ stages:
     if: branch = master
 
 jobs:
+  fast_finish: true
   include:
     - stage: test
       install:
-        - travis_retry pip install -e .[coverage]
+        - travis_retry pip install -e .[build,coverage]
         - travis_retry pip install codecov
       script:
         - python setup.py check -rms  # check package metadata
