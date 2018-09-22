@@ -27,11 +27,6 @@ jobs:
       dist: trusty
       python: 3.6
       env: NIGHTLY_BUILD=1  # dummy envvar to force travis to classify this build differently
-      before_install: *test-install
-      install:
-        - travis_retry pip uninstall torch
-        - travis_retry pip install torch_nightly -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
-      script: *test-script
   include:
     - stage: test
       os: linux
@@ -65,6 +60,15 @@ jobs:
         - PY_TAG='cp37'
         - PLAT_NAME='none'
       install: *test-install
+      script: *test-script
+    - os: linux
+      dist: trusty
+      python: 3.6
+      env: NIGHTLY_BUILD=1
+      before_install: *test-install
+      install:
+        - travis_retry pip uninstall torch
+        - travis_retry pip install torch_nightly -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
       script: *test-script
     - os: osx
       name: "Python 3.5"
