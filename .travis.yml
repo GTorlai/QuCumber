@@ -15,42 +15,6 @@ branches:
 cache:
   - pip
 
-matrix:
-  fast_finish: true
-  include:
-    - os: linux
-      dist: trusty
-      python: 3.5
-      sudo: false
-      env:
-        - PY_TAG='cp35'
-        - PLAT_NAME='none'
-    - os: linux
-      dist: trusty
-      python: 3.6
-      sudo: false
-      env:
-        - PY_TAG='cp36'
-        - PLAT_NAME='none'
-    - os: linux
-      dist: xenial
-      python: 3.7
-      sudo: true
-      env:
-        - PY_TAG='cp37'
-        - PLAT_NAME='none'
-
-    - os: osx
-      python: 3.5
-      env:
-        - PY_TAG='cp35'
-        - PLAT_NAME='macosx'
-    - os: osx
-      python: 3.6
-      env:
-        - PY_TAG='cp36'
-        - PLAT_NAME='macosx'
-
 stages:
   - test
   - style
@@ -62,13 +26,49 @@ jobs:
   fast_finish: true
   include:
     - stage: test
-      install:
-        - travis_retry pip install -e .[coverage]
-        - travis_retry pip install codecov docutils
-      script:
-        - python setup.py check -rms  # check package metadata
-        - pytest -s --cov=qucumber --no-cov-on-fail
-      after_success: codecov
+      os: linux
+      dist: trusty
+      python: 3.5
+      sudo: false
+      env:
+        - PY_TAG='cp35'
+        - PLAT_NAME='none'
+      <<: &test-stage
+        install:
+          - travis_retry pip install -e .[coverage]
+          - travis_retry pip install codecov docutils
+        script:
+          - python setup.py check -rms  # check package metadata
+          - pytest -s --cov=qucumber --no-cov-on-fail
+        after_success: codecov
+    - os: linux
+      dist: trusty
+      python: 3.6
+      sudo: false
+      env:
+        - PY_TAG='cp36'
+        - PLAT_NAME='none'
+      <<: *test-stage
+    - os: linux
+      dist: xenial
+      python: 3.7
+      sudo: true
+      env:
+        - PY_TAG='cp37'
+        - PLAT_NAME='none'
+      <<: *test-stage
+    - os: osx
+      python: 3.5
+      env:
+        - PY_TAG='cp35'
+        - PLAT_NAME='macosx'
+      <<: *test-stage
+    - os: osx
+      python: 3.6
+      env:
+        - PY_TAG='cp36'
+        - PLAT_NAME='macosx'
+      <<: *test-stage
 
     - stage: style
       python: 3.6
