@@ -50,8 +50,8 @@ matrix:
         - PLAT_NAME='macosx'
 
 stages:
-  - style
   - test
+  - style
   - docs
   - name: deploy
     if: branch = master
@@ -61,7 +61,7 @@ jobs:
     - stage: test
       install:
         - travis_retry pip install -e .[coverage]
-        - travis_retry pip install codecov ipython
+        - travis_retry pip install codecov
       script:
         - python setup.py check -rms  # check package metadata
         - pytest -s --cov=qucumber --no-cov-on-fail
@@ -69,7 +69,9 @@ jobs:
 
     - stage: style
       python: 3.6
-      install: travis_retry pip install -e .[style]
+      install:
+        - travis_retry pip install ipython
+        - travis_retry pip install -e .[style]
       script: inv style
 
     - stage: docs
