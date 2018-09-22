@@ -145,7 +145,7 @@ jobs:
       services:
         - docker
       env: CIBW_SKIP='cp27-* cp34-*'
-      script: travis_retry pip install cibuildwheel
+      install: travis_retry pip install cibuildwheel
       script: cibuildwheel --output-dir wheelhouse
     - name: "OSX Wheel"
       os: osx
