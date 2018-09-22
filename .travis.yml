@@ -103,6 +103,10 @@ jobs:
 
     - stage: docs
       python: 3.6
+      addons:
+        apt:
+          packages:
+            - libenchant1c2a
       install: travis_retry pip install -e .[docs]
       script:
         - cd docs; make test
