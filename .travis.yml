@@ -144,11 +144,13 @@ jobs:
       sudo: required
       services:
         - docker
-      install: travis_retry pip install cibuildwheel
+      env: CIBW_SKIP='cp27-* cp34-*'
+      script: travis_retry pip install cibuildwheel
       script: cibuildwheel --output-dir wheelhouse
     - name: "OSX Wheel"
       os: osx
       language: generic
+      env: CIBW_SKIP='cp27-* cp34-*'
       install: travis_retry pip install cibuildwheel
       script: cibuildwheel --output-dir wheelhouse
 
