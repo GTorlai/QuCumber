@@ -17,8 +17,6 @@ cache:
 
 stages:
   - test
-  - style
-  - docs
   - name: deploy
     if: branch = master
 
@@ -59,6 +57,7 @@ jobs:
       install: *test-install
       script: *test-script
     - os: osx
+      name: "Python 3.5"
       language: objective-c
       env:
         - PYENV_VERSION=3.5.6
@@ -77,6 +76,7 @@ jobs:
       install: *test-install
       script: *test-script
     - os: osx
+      name: "Python 3.6"
       language: objective-c
       env:
         - PYENV_VERSION=3.6.6
@@ -86,6 +86,7 @@ jobs:
       install: *test-install
       script: *test-script
     - os: osx
+      name: "Python 3.7"
       language: objective-c
       env:
         - PYENV_VERSION=3.7.0
@@ -95,19 +96,22 @@ jobs:
       install: *test-install
       script: *test-script
 
-    - stage: style
+    - os: linux
+      name: "Style Check"
       python: 3.6
       install:
         - travis_retry pip install ipython
         - travis_retry pip install -e .[style]
       script: inv style
 
-    - stage: docs
+    - os: linux
+      name: "Documentation Format Tests"
       python: 3.6
       addons:
         apt:
           packages:
             - libenchant1c2a
+            - pandoc
       install: travis_retry pip install -e .[docs]
       script:
         - cd docs; make test
