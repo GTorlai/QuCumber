@@ -35,10 +35,10 @@ jobs:
         - PLAT_NAME='none'
       install: &linux-test-install
         - travis_retry pip install -e .[coverage]
-        - travis_retry pip install codecov docutils
+        - travis_retry pip install codecov docutils pytest-xdist
       script: &test-script
         - python setup.py check -rms  # check package metadata
-        - pytest -s --cov=qucumber --no-cov-on-fail
+        - pytest -s --cov=qucumber --no-cov-on-fail -n auto
       after_success: codecov
     - os: linux
       dist: trusty
