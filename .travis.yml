@@ -28,6 +28,7 @@ jobs:
   fast_finish: true
   allow_failures:
     - env: ALLOW_FAIL=1
+    - env: *mac-wheel-build
   include:
     - stage: test
       os: linux
@@ -152,7 +153,7 @@ jobs:
     - name: "OSX Wheels (allowed to fail - need to fix)"
       os: osx
       language: generic
-      env:
+      env: &mac-wheel-build
         - CIBW_SKIP='cp27-* cp34-* *i686'
         - ALLOW_FAIL=1
       install: travis_retry pip install cibuildwheel
