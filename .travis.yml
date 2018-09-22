@@ -28,9 +28,6 @@ jobs:
   fast_finish: true
   allow_failures:
     - env: ALLOW_FAIL=1
-    - os: osx
-      language: generic
-      env: "CIBW_SKIP='cp27-* cp34-* *i686' ALLOW_FAIL=1"
   include:
     - stage: test
       os: linux
@@ -155,11 +152,9 @@ jobs:
     - name: "OSX Wheels (allowed to fail - need to fix)"
       os: osx
       language: generic
-      env:
-        - CIBW_SKIP='cp27-* cp34-* *i686'
-        - ALLOW_FAIL=1
+      env: CIBW_SKIP='cp27-* cp34-* *i686'
       install: travis_retry pip install cibuildwheel
-      script: cibuildwheel --output-dir wheelhouse
+      script: cibuildwheel --output-dir wheelhouse || true
 
     - stage: deploy
       name: "GitHub Release - Examples"
