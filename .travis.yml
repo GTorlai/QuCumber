@@ -28,7 +28,9 @@ jobs:
   fast_finish: true
   allow_failures:
     - env: ALLOW_FAIL=1
-    - env: *mac-wheel-build
+    - os: osx
+      language: generic
+      env: *mac-wheel-build
   include:
     - stage: test
       os: linux
