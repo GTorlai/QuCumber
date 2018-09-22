@@ -33,14 +33,13 @@ jobs:
       env:
         - PY_TAG='cp35'
         - PLAT_NAME='none'
-      <<: &test-stage
-        install:
-          - travis_retry pip install -e .[coverage]
-          - travis_retry pip install codecov docutils
-        script:
-          - python setup.py check -rms  # check package metadata
-          - pytest -s --cov=qucumber --no-cov-on-fail
-        after_success: codecov
+      install: &linux-test-install
+        - travis_retry pip install -e .[coverage]
+        - travis_retry pip install codecov docutils
+      script: &test-script
+        - python setup.py check -rms  # check package metadata
+        - pytest -s --cov=qucumber --no-cov-on-fail
+      after_success: codecov
     - os: linux
       dist: trusty
       python: 3.6
@@ -48,7 +47,8 @@ jobs:
       env:
         - PY_TAG='cp36'
         - PLAT_NAME='none'
-      <<: *test-stage
+      <<: *linux-test-install
+      <<: *test-script
     - os: linux
       dist: xenial
       python: 3.7
@@ -56,19 +56,39 @@ jobs:
       env:
         - PY_TAG='cp37'
         - PLAT_NAME='none'
-      <<: *test-stage
+      <<: *linux-test-install
+      <<: *test-script
     - os: osx
-      python: 3.5
+      language: objective-c
       env:
+        - PYENV_VERSION=3.5.6
         - PY_TAG='cp35'
         - PLAT_NAME='macosx'
-      <<: *test-stage
+      install: &mac-test-install
+        - brew update && brew install pyenv
+        - hash -r
+        - eval "$(pyenv init -)"
+        - hash -r
+        - travis_retry pyenv install -s $PYENV_VERSION
+        - travis_retry pip install -e .[coverage]
+        - travis_retry pip install codecov docutils
+      <<: *test-script
     - os: osx
-      python: 3.6
+      language: objective-c
       env:
+        - PYENV_VERSION=3.6.6
         - PY_TAG='cp36'
         - PLAT_NAME='macosx'
-      <<: *test-stage
+      <<: *max-test-install
+      <<: *test-script
+    - os: osx
+      language: objective-c
+      env:
+        - PYENV_VERSION=3.7.6
+        - PY_TAG='cp36'
+        - PLAT_NAME='macosx'
+      <<: *max-test-install
+      <<: *test-script
 
     - stage: style
       python: 3.6
