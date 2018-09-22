@@ -67,7 +67,7 @@ jobs:
       env: NIGHTLY_BUILD=1
       before_install: *test-install
       install:
-        - travis_retry pip uninstall torch
+        - travis_retry pip uninstall -y torch
         - travis_retry pip install torch_nightly -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
       script: *test-script
     - os: osx
