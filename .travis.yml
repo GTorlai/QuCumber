@@ -1,7 +1,7 @@
 dist: trusty
-
 sudo: false
 language: python
+
 
 git:
   depth: false
@@ -10,23 +10,23 @@ branches:
   except:
     - gh-pages
 
+
 cache:
   directories:
     - "$HOME/.cache/pip"
     - "$HOME/.pyenv"
+
 
 stages:
   - test
   - name: deploy
     if: branch = master
 
+
 jobs:
   fast_finish: true
-  allow_failures:  # try running QuCumber against nightly build of PyTorch
-    - os: linux
-      dist: trusty
-      python: 3.6
-      env: NIGHTLY_BUILD=1  # dummy envvar to force travis to classify this build differently
+  allow_failures:
+    - env: NIGHTLY_BUILD=1
   include:
     - stage: test
       os: linux
@@ -43,6 +43,7 @@ jobs:
         - python setup.py check -rms  # check package metadata
         - pytest -s --cov=qucumber --no-cov-on-fail -n auto
       after_success: codecov
+
     - os: linux
       dist: trusty
       python: 3.6
@@ -52,6 +53,7 @@ jobs:
         - PLAT_NAME='none'
       install: *test-install
       script: *test-script
+
     - os: linux
       dist: xenial
       python: 3.7
@@ -61,7 +63,8 @@ jobs:
         - PLAT_NAME='none'
       install: *test-install
       script: *test-script
-    - os: linux
+
+    - os: linux  # try running QuCumber against nightly build of PyTorch
       dist: trusty
       python: 3.6
       env: NIGHTLY_BUILD=1
@@ -70,6 +73,7 @@ jobs:
         - travis_retry pip uninstall -y torch
         - travis_retry pip install torch_nightly -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
       script: *test-script
+
     - os: osx
       name: "Python 3.5"
       language: objective-c
@@ -89,6 +93,7 @@ jobs:
         - pip -V
       install: *test-install
       script: *test-script
+
     - os: osx
       name: "Python 3.6"
       language: objective-c
@@ -99,6 +104,7 @@ jobs:
       before_install: *mac-install
       install: *test-install
       script: *test-script
+
     - os: osx
       name: "Python 3.7"
       language: objective-c
@@ -132,6 +138,7 @@ jobs:
         - cd docs; make spelling
         - cd docs; make linkcheck
 
+
     - stage: deploy
       name: "GitHub Release - Examples"
       os: linux
@@ -150,6 +157,7 @@ jobs:
         on:
           repo: PIQuIL/QuCumber
           tags: true
+
     - name: "GitHub Release - Package Source Distribution"
       script: python setup.py sdist
       os: linux
@@ -157,6 +165,7 @@ jobs:
       deploy:
         <<: *gh-releases
         file: dist/*.tar.gz
+
     - name: "PyPI"
       script: skip
       deploy:
@@ -169,6 +178,7 @@ jobs:
         on:
           repo: PIQuIL/QuCumber
           tags: true
+
 
 notifications:
   slack:
