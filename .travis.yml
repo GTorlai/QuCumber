@@ -33,7 +33,7 @@ jobs:
       env:
         - PY_TAG='cp35'
         - PLAT_NAME='none'
-      install: &linux-test-install
+      install: &test-install
         - travis_retry pip install -e .[coverage]
         - travis_retry pip install codecov docutils pytest-xdist
       script: &test-script
@@ -47,7 +47,7 @@ jobs:
       env:
         - PY_TAG='cp36'
         - PLAT_NAME='none'
-      install: *linux-test-install
+      install: *test-install
       script: *test-script
     - os: linux
       dist: xenial
@@ -56,7 +56,7 @@ jobs:
       env:
         - PY_TAG='cp37'
         - PLAT_NAME='none'
-      install: *linux-test-install
+      install: *test-install
       script: *test-script
     - os: osx
       language: objective-c
@@ -64,7 +64,7 @@ jobs:
         - PYENV_VERSION=3.5.6
         - PY_TAG='cp35'
         - PLAT_NAME='macosx'
-      install: &mac-test-install
+      before_install: &mac-install
         - mkdir -p $HOME/.matplotlib/
         - "echo backend : TkAgg > $HOME/.matplotlib/matplotlibrc"
         - brew update && brew upgrade pyenv
@@ -74,9 +74,7 @@ jobs:
         - pyenv global $PYENV_VERSION
         - pyenv rehash
         - pip -V
-        - *linux-test-install
-        # - travis_retry pip install -e .[coverage]
-        # - travis_retry pip install codecov docutils python-xdist
+      install: *test-install
       script: *test-script
     - os: osx
       language: objective-c
@@ -84,7 +82,8 @@ jobs:
         - PYENV_VERSION=3.6.6
         - PY_TAG='cp36'
         - PLAT_NAME='macosx'
-      install: *mac-test-install
+      before_install: *mac-install
+      install: *test-install
       script: *test-script
     - os: osx
       language: objective-c
@@ -92,7 +91,8 @@ jobs:
         - PYENV_VERSION=3.7.0
         - PY_TAG='cp37'
         - PLAT_NAME='macosx'
-      install: *mac-test-install
+      before_install: *mac-install
+      install: *test-install
       script: *test-script
 
     - stage: style
